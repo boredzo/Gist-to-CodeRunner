@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'CodeRunner Gist adapter' target in the 'CodeRunner Gist adapter' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif
