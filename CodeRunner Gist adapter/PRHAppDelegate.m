@@ -8,11 +8,53 @@
 
 #import "PRHAppDelegate.h"
 
-@implementation PRHAppDelegate
+#import "PRHGistToCodeRunnerWindowController.h"
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+@interface PRHAppDelegate () <PRHGistToCodeRunnerWindowControllerDelegate>
+@end
+
+@implementation PRHAppDelegate
 {
-	// Insert code here to initialize your application
+	NSMutableArray *servicesInProgress;
+}
+
+- (void) applicationWillFinishLaunching:(NSNotification *)notification {
+	servicesInProgress = [[NSMutableArray alloc] init];
+
+	[NSApp setServicesProvider:self];
+}
+
+- (void) sendGistURLToCodeRunner:(NSPasteboard *)pasteboard userData:(id)userData error:(out NSString **)errorString {
+	NSURL *URL = [NSURL URLFromPasteboard:pasteboard];
+	if (!URL) {
+		NSString *URLString = [pasteboard stringForType:NSStringPboardType];
+		if (!URLString) {
+			*errorString = NSLocalizedString(@"That isn't a URL", @"Error for input not describing a URL");
+		} else {
+			if ([URLString hasPrefix:@"http://gist.github.com/"] || [URLString hasPrefix:@"https://gist.github.com/"]) {
+				URL = [NSURL URLWithString:URLString];
+			} else {
+				*errorString = NSLocalizedString(@"That URL doesn't refer to a GitHub Gist", @"Error for input that isn't a GitHub Gist URL");
+			}
+		}
+	}
+
+	if (!URL) {
+		return;
+	}
+
+	//Now we have the URL. Use it.
+	PRHGistToCodeRunnerWindowController *wc = [[PRHGistToCodeRunnerWindowController alloc] init];
+	wc.gistURL = URL;
+	wc.delegate = self;
+	[wc start];
+	[servicesInProgress addObject:wc];
+	[wc showWindow:nil];
+}
+
+- (void) gistToCodeRunnerDidFinish:(PRHGistToCodeRunnerWindowController *)windowController {
+	[windowController close];
+	[servicesInProgress removeObjectIdenticalTo:windowController];
 }
 
 @end

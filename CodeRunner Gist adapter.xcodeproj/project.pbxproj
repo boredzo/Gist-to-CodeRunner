@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B2A6A0F0D80EBEBCC1E64D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B2A6C2D1A3D610A7B258DBC /* Localizable.strings */; };
 		31163E2D16573DAE00492D83 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31163E2C16573DAE00492D83 /* Cocoa.framework */; };
 		31163E3716573DAE00492D83 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 31163E3516573DAE00492D83 /* InfoPlist.strings */; };
 		31163E3916573DAE00492D83 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 31163E3816573DAE00492D83 /* main.m */; };
 		31163E3D16573DAE00492D83 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 31163E3B16573DAE00492D83 /* Credits.rtf */; };
 		31163E4016573DAE00492D83 /* PRHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31163E3F16573DAE00492D83 /* PRHAppDelegate.m */; };
 		31163E4316573DAE00492D83 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31163E4116573DAE00492D83 /* MainMenu.xib */; };
+		31163E4C16573DCB00492D83 /* PRHGistToCodeRunnerWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31163E4A16573DCB00492D83 /* PRHGistToCodeRunnerWindowController.m */; };
+		31163E4E16573E8100492D83 /* PRHGistToCodeRunnerWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31163E5016573E8100492D83 /* PRHGistToCodeRunnerWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1B2A6C2D1A3D610A7B258DBC /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		31163E2816573DAE00492D83 /* CodeRunner Gist adapter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CodeRunner Gist adapter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31163E2C16573DAE00492D83 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		31163E2F16573DAE00492D83 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -29,6 +33,9 @@
 		31163E3E16573DAE00492D83 /* PRHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PRHAppDelegate.h; sourceTree = "<group>"; };
 		31163E3F16573DAE00492D83 /* PRHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PRHAppDelegate.m; sourceTree = "<group>"; };
 		31163E4216573DAE00492D83 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		31163E4916573DCB00492D83 /* PRHGistToCodeRunnerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRHGistToCodeRunnerWindowController.h; sourceTree = "<group>"; };
+		31163E4A16573DCB00492D83 /* PRHGistToCodeRunnerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRHGistToCodeRunnerWindowController.m; sourceTree = "<group>"; };
+		31163E4F16573E8100492D83 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PRHGistToCodeRunnerWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +92,11 @@
 				31163E3E16573DAE00492D83 /* PRHAppDelegate.h */,
 				31163E3F16573DAE00492D83 /* PRHAppDelegate.m */,
 				31163E4116573DAE00492D83 /* MainMenu.xib */,
+				31163E4916573DCB00492D83 /* PRHGistToCodeRunnerWindowController.h */,
+				31163E4A16573DCB00492D83 /* PRHGistToCodeRunnerWindowController.m */,
+				31163E5016573E8100492D83 /* PRHGistToCodeRunnerWindowController.xib */,
 				31163E3316573DAE00492D83 /* Supporting Files */,
+				1B2A6C2D1A3D610A7B258DBC /* Localizable.strings */,
 			);
 			path = "CodeRunner Gist adapter";
 			sourceTree = "<group>";
@@ -157,6 +168,8 @@
 				31163E3716573DAE00492D83 /* InfoPlist.strings in Resources */,
 				31163E3D16573DAE00492D83 /* Credits.rtf in Resources */,
 				31163E4316573DAE00492D83 /* MainMenu.xib in Resources */,
+				31163E4E16573E8100492D83 /* PRHGistToCodeRunnerWindowController.xib in Resources */,
+				1B2A6A0F0D80EBEBCC1E64D9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +182,7 @@
 			files = (
 				31163E3916573DAE00492D83 /* main.m in Sources */,
 				31163E4016573DAE00492D83 /* PRHAppDelegate.m in Sources */,
+				31163E4C16573DCB00492D83 /* PRHGistToCodeRunnerWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +211,14 @@
 				31163E4216573DAE00492D83 /* en */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		31163E5016573E8100492D83 /* PRHGistToCodeRunnerWindowController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				31163E4F16573E8100492D83 /* en */,
+			);
+			name = PRHGistToCodeRunnerWindowController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -298,6 +320,7 @@
 				31163E4816573DAF00492D83 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
