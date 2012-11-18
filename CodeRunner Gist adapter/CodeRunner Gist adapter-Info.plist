@@ -38,7 +38,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Send Gist to CodeRunner…</string>
+				<string>Send Gist to CodeRunner</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>sendGistURLToCodeRunner</string>
