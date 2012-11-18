@@ -20,7 +20,7 @@
 
 /* Begin PBXFileReference section */
 		1B2A6C2D1A3D610A7B258DBC /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		31163E2816573DAE00492D83 /* CodeRunner Gist adapter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CodeRunner Gist adapter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31163E2816573DAE00492D83 /* CodeRunner Gist adapter.service */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CodeRunner Gist adapter.service"; sourceTree = BUILT_PRODUCTS_DIR; };
 		31163E2C16573DAE00492D83 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		31163E2F16573DAE00492D83 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		31163E3016573DAE00492D83 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -62,7 +62,7 @@
 		31163E2916573DAE00492D83 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				31163E2816573DAE00492D83 /* CodeRunner Gist adapter.app */,
+				31163E2816573DAE00492D83 /* CodeRunner Gist adapter.service */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,7 +130,7 @@
 			);
 			name = "CodeRunner Gist adapter";
 			productName = "CodeRunner Gist adapter";
-			productReference = 31163E2816573DAE00492D83 /* CodeRunner Gist adapter.app */;
+			productReference = 31163E2816573DAE00492D83 /* CodeRunner Gist adapter.service */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -285,7 +285,7 @@
 				GCC_PREFIX_HEADER = "CodeRunner Gist adapter/CodeRunner Gist adapter-Prefix.pch";
 				INFOPLIST_FILE = "CodeRunner Gist adapter/CodeRunner Gist adapter-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
+				WRAPPER_EXTENSION = service;
 			};
 			name = Debug;
 		};
@@ -297,7 +297,7 @@
 				GCC_PREFIX_HEADER = "CodeRunner Gist adapter/CodeRunner Gist adapter-Prefix.pch";
 				INFOPLIST_FILE = "CodeRunner Gist adapter/CodeRunner Gist adapter-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
+				WRAPPER_EXTENSION = service;
 			};
 			name = Release;
 		};
