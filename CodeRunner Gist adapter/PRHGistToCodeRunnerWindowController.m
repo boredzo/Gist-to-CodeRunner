@@ -26,6 +26,7 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 
 @implementation PRHGistToCodeRunnerWindowController
 {
+	NSString *gistName;
 	NSMutableDictionary *downloadsByFilename;
 	NSArray *allDownloadFilenames;
 	NSArray *allFileURLs;
@@ -49,8 +50,15 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 
 - (void) windowDidLoad {
 	[super windowDidLoad];
+}
 
-	// Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+- (void)updateWindowTitle {
+    self.window.title = gistName ?: NSLocalizedString(@"Loading Gist…", @"Window title for loading window");
+}
+
+- (void) showWindow:(id)sender {
+	[self updateWindowTitle];
+	[super showWindow:sender];
 }
 
 - (void) start {
@@ -81,15 +89,20 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
 			                                                     options:(NSJSONReadingOptions)0
 				                                                   error:&error];
-			NSString *title = dict[@"description"];
-			if (![self objectIsKindOfClass:[NSString class] andIsNonNilAndNonEmpty:title]) {
+			gistName = dict[@"description"];
+			if (![self objectIsKindOfClass:[NSString class] andIsNonNilAndNonEmpty:gistName]) {
 				error = [self invalidFormatError];
 			}
-			NSString *gistFilename = [title stringByAppendingPathExtension:@"gist"];
+
+			if ([self isWindowLoaded]) {
+				[self updateWindowTitle];
+			}
+
+			NSString *gistFilename = [gistName stringByAppendingPathExtension:@"gist"];
 			if (gistFilename.length > NAME_MAX) {
 				NSUInteger lengthDiff = NAME_MAX - gistFilename.length;
 				NSUInteger correctLength = gistFilename.length - lengthDiff;
-				gistFilename = [[title substringToIndex:correctLength]
+				gistFilename = [[gistName substringToIndex:correctLength]
 					stringByAppendingPathExtension:@"gist"];
 			}
 
