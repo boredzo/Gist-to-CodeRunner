@@ -36,6 +36,7 @@
 		31163E4916573DCB00492D83 /* PRHGistToCodeRunnerWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRHGistToCodeRunnerWindowController.h; sourceTree = "<group>"; };
 		31163E4A16573DCB00492D83 /* PRHGistToCodeRunnerWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRHGistToCodeRunnerWindowController.m; sourceTree = "<group>"; };
 		31163E4F16573E8100492D83 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PRHGistToCodeRunnerWindowController.xib; sourceTree = "<group>"; };
+		314B0E6A165AE85200CB0092 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Warnings.xcconfig; path = Warnings/Warnings.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +110,7 @@
 				31163E3816573DAE00492D83 /* main.m */,
 				31163E3A16573DAE00492D83 /* CodeRunner Gist adapter-Prefix.pch */,
 				31163E3B16573DAE00492D83 /* Credits.rtf */,
+				314B0E6A165AE85200CB0092 /* Warnings.xcconfig */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -226,6 +228,7 @@
 /* Begin XCBuildConfiguration section */
 		31163E4416573DAE00492D83 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 314B0E6A165AE85200CB0092 /* Warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -256,6 +259,7 @@
 		};
 		31163E4516573DAE00492D83 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 314B0E6A165AE85200CB0092 /* Warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
