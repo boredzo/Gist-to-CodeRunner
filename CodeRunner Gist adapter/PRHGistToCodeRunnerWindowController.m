@@ -56,8 +56,19 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
     self.window.title = gistName ?: NSLocalizedString(@"Loading Gist…", @"Window title for loading window");
 }
 
+- (void) setUpDeterminateProgressBar {
+    self.loadingProgressBar.doubleValue = 0.0;
+    self.loadingProgressBar.maxValue = allDownloadFilenames.count;
+	self.loadingProgressBar.indeterminate = NO;
+}
+
 - (void) showWindow:(id)sender {
 	[self updateWindowTitle];
+
+	if (allDownloadFilenames) {
+		[self setUpDeterminateProgressBar];
+	}
+
 	[super showWindow:sender];
 }
 
@@ -184,6 +195,8 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			allFileURLs = [allFileURLsToBe copy];
 
 			if (downloadsByFilename.count > 0) {
+				[self setUpDeterminateProgressBar];
+
 				[self.loadingProgressBar startAnimation:nil];
 			} else {
 				//No need to show the main window—we have everything already.
@@ -255,6 +268,8 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			[downloadsByFilename removeObjectForKey:filename];
 		}
 	}
+
+	self.loadingProgressBar.doubleValue = (allDownloadFilenames.count - downloadsByFilename.count);
 
 	if (downloadsByFilename.count == 0) {
 		[self launchMainFileInCodeRunner];
