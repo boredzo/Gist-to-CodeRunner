@@ -185,7 +185,6 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 
 			if (downloadsByFilename.count > 0) {
 				//TODO: Only show the window after downloads (plus the initial API request) have progressed for some seconds.
-				//TODO: Set the window's title.
 				[self.loadingProgressBar startAnimation:nil];
 			} else {
 				//No need to show the main window—we have everything already.
