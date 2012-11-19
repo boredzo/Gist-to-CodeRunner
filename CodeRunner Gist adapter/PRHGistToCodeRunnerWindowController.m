@@ -184,7 +184,6 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			allFileURLs = [allFileURLsToBe copy];
 
 			if (downloadsByFilename.count > 0) {
-				//TODO: Only show the window after downloads (plus the initial API request) have progressed for some seconds.
 				[self.loadingProgressBar startAnimation:nil];
 			} else {
 				//No need to show the main window—we have everything already.
