@@ -49,7 +49,6 @@
 	wc.delegate = self;
 	[wc start];
 	[servicesInProgress addObject:wc];
-	[wc showWindow:nil];
 }
 
 - (void) gistToCodeRunnerDidFinish:(PRHGistToCodeRunnerWindowController *)windowController {

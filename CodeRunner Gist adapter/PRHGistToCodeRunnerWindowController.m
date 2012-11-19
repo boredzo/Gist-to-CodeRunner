@@ -15,6 +15,11 @@
 @property(strong) IBOutlet NSView *fileToOpenPickerView;
 @property(weak) IBOutlet NSPopUpButton *fileToOpenPopUp;
 
+@property(strong) NSURL *selectedMainFileURL;
+
+- (IBAction)openSelectedMainFile:(id)sender;
+- (IBAction)cancel:(id)sender;
+
 @end
 
 static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
@@ -25,6 +30,7 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 	NSArray *allDownloadFilenames;
 	NSArray *allFileURLs;
 	NSArray *mainFileCandidates;
+	NSTimer *showWindowTimer;
 }
 
 - (id) initWithWindow:(NSWindow *)window {
@@ -49,6 +55,12 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 
 - (void) start {
 	NSParameterAssert(self.gistURL != nil);
+
+	showWindowTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+	                                                   target:self
+	                                                 selector:@selector(showWindowAfterTimer:)
+			                                         userInfo:nil
+			                                          repeats:NO];
 
 	NSSet *setOfMainFileTypes = nil;
 	NSArray *arrayOfMainFileTypes = [[NSUserDefaults standardUserDefaults]
@@ -163,10 +175,26 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 				//TODO: Set the window's title.
 				[self.loadingProgressBar startAnimation:nil];
 			} else {
+				//No need to show the main window—we have everything already.
+				[self cancelShowWindowTimer];
+
 				[self launchMainFileInCodeRunner];
 			}
 		}
 	}];
+}
+
+- (void) cancelShowWindowTimer {
+	[showWindowTimer invalidate];
+	showWindowTimer = nil;
+}
+
+- (void) showWindowAfterTimer:(NSTimer *)showWindowAfterTimer {
+	//Make sure we have the progress bar to be able to start it.
+	(void)[self window];
+
+	[self.loadingProgressBar startAnimation:nil];
+	[self showWindow:nil];
 }
 
 - (NSURL *) githubAPIGistURLWithWebGistURL:(NSURL *)url {
@@ -224,25 +252,51 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 
 - (void) launchMainFileInCodeRunner {
 	if (mainFileCandidates.count > 1) {
-		//TODO: Present the choice of main file.
-	}
+		NSWindow *window = [self window];
+		[self populatePopUpMenu];
+		window.contentView = self.fileToOpenPickerView;
 
-	NSURL *mainFileURL =
-		  mainFileCandidates.count >= 1
-		? [mainFileCandidates objectAtIndex:0]
-		: allFileURLs.count == 1
-		? [allFileURLs objectAtIndex:0]
-		: nil;
-	if (!mainFileURL) {
-		//TODO: Present an error.
+		//Just in case we weren't already visible.
+		[self cancelShowWindowTimer];
+		[self showWindow:nil];
 	} else {
-		[[NSWorkspace sharedWorkspace] openURLs:@[mainFileURL]
-		                withAppBundleIdentifier:codeRunnerBundleIdentifier
-							            options:NSWorkspaceLaunchAsync
-				 additionalEventParamDescriptor:nil launchIdentifiers:NULL];
-
-		[self notifyDelegateOfCompletion];
+		NSURL *mainFileURL =
+			mainFileCandidates.count >= 1
+				? [mainFileCandidates objectAtIndex:0]
+				: allFileURLs.count == 1
+				? [allFileURLs objectAtIndex:0]
+				: nil;
+		if (!mainFileURL) {
+			//TODO: Present an error.
+		} else {
+			[self launchFileInCodeRunner:mainFileURL];
+		}
 	}
+}
+
+- (void) populatePopUpMenu {
+	NSMenu *menu = [self.fileToOpenPopUp menu];
+	[menu removeAllItems];
+	for (NSURL *URL in allFileURLs) {
+		NSMenuItem *menuItem = [menu addItemWithTitle:[URL lastPathComponent]
+		                                       action:@selector(selectMainFileURLWithMenuItem:)
+			                            keyEquivalent:@""];
+		menuItem.target = self;
+		menuItem.representedObject = URL;
+	}
+}
+
+- (IBAction) selectMainFileURLWithMenuItem:(id)sender {
+	self.selectedMainFileURL = [sender representedObject];
+}
+
+- (void) launchFileInCodeRunner:(NSURL *)fileURL {
+	[[NSWorkspace sharedWorkspace] openURLs:@[fileURL]
+	                withAppBundleIdentifier:codeRunnerBundleIdentifier
+						            options:NSWorkspaceLaunchAsync
+			 additionalEventParamDescriptor:nil launchIdentifiers:NULL];
+
+	[self notifyDelegateOfCompletion];
 }
 
 - (void) download:(NSURLDownload *)download didFailWithError:(NSError *)error {
@@ -251,6 +305,15 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 
 - (void) windowWillClose:(NSNotification *)notification {
 	[self cancelAllDownloads];
+}
+
+- (IBAction)openSelectedMainFile:(id)sender {
+	[self launchFileInCodeRunner:self.selectedMainFileURL];
+}
+
+- (IBAction)cancel:(id)sender {
+	[self cancelAllDownloads];
+	[self close];
 }
 
 @end
