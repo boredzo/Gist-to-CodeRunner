@@ -51,6 +51,7 @@
 			<array>
 				<string>public.utf8-plain-text</string>
 				<string>public.url</string>
+                <string>public.rtf</string>
 			</array>
 		</dict>
 	</array>

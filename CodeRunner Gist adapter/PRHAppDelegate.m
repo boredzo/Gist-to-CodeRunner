@@ -40,19 +40,51 @@
 
 - (NSURL *) URLFromPasteboard:(NSPasteboard *)pasteboard errorString:(out NSString **)errorString {
 	NSURL *URL = [NSURL URLFromPasteboard:pasteboard];
-	if (!URL) {
-		NSString *URLString = [pasteboard stringForType:NSStringPboardType];
+	NSString *URLString;
+	if (URL) {
+		URLString = [URL absoluteString];
+	} else {
+		URLString = [pasteboard stringForType:NSStringPboardType];
 		if (!URLString) {
-			*errorString = NSLocalizedString(@"That isn't a URL", @"Error for input not describing a URL");
-		} else {
-			if ([URLString hasPrefix:@"http://gist.github.com/"] || [URLString hasPrefix:@"https://gist.github.com/"]) {
-				URL = [NSURL URLWithString:URLString];
-			} else {
-				*errorString = NSLocalizedString(@"That URL doesn't refer to a GitHub Gist", @"Error for input that isn't a GitHub Gist URL");
-			}
+			NSDictionary *documentAttributes = nil;
+			NSData *RTFData = [pasteboard dataForType:(__bridge NSString *)kUTTypeRTF];
+			NSAttributedString *document = RTFData
+				? [[NSAttributedString alloc] initWithRTF:RTFData documentAttributes:&documentAttributes]
+				: nil;
+			__block NSURL *foundURL;
+			__block NSString *foundURLString;
+			[document enumerateAttribute:NSLinkAttributeName
+			                     inRange:(NSRange){ 0, [document length] }
+				                 options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+						      usingBlock:^(id value, NSRange range, BOOL *stop) {
+				if ([value isKindOfClass:[NSURL class]]) {
+					foundURL = value;
+					foundURLString = [foundURL absoluteString];
+				} else if ([value isKindOfClass:[NSString class]]) {
+					foundURLString = value;
+					foundURL = [NSURL URLWithString:foundURLString];
+				}
+			}];
+			URL = foundURL;
+			URLString = foundURLString;
 		}
 	}
+
+	if (URL) {
+		if (![self isGistURLString:URLString]) {
+			*errorString = NSLocalizedString(@"That URL doesn't refer to a GitHub Gist", @"Error for input that isn't a GitHub Gist URL");
+			URL = nil;
+		}
+	} else {
+		*errorString = NSLocalizedString(@"That isn't a URL", @"Error for input not describing a URL");
+		URL = nil;
+	}
+
 	return URL;
+}
+
+- (BOOL) isGistURLString:(NSString *)URLString {
+	return [URLString hasPrefix:@"http://gist.github.com/"] || [URLString hasPrefix:@"https://gist.github.com/"];
 }
 
 - (void) gistToCodeRunnerDidFinish:(PRHGistToCodeRunnerWindowController *)windowController {
