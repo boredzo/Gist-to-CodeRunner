@@ -25,6 +25,20 @@
 }
 
 - (void) sendGistURLToCodeRunner:(NSPasteboard *)pasteboard userData:(id)userData error:(out NSString **)errorString {
+	NSURL *URL = [self URLFromPasteboard:pasteboard errorString:errorString];
+	if (!URL) {
+		return;
+	}
+
+	//Now we have the URL. Use it.
+	PRHGistToCodeRunnerWindowController *wc = [[PRHGistToCodeRunnerWindowController alloc] init];
+	wc.gistURL = URL;
+	wc.delegate = self;
+	[wc start];
+	[servicesInProgress addObject:wc];
+}
+
+- (NSURL *) URLFromPasteboard:(NSPasteboard *)pasteboard errorString:(out NSString **)errorString {
 	NSURL *URL = [NSURL URLFromPasteboard:pasteboard];
 	if (!URL) {
 		NSString *URLString = [pasteboard stringForType:NSStringPboardType];
@@ -38,17 +52,7 @@
 			}
 		}
 	}
-
-	if (!URL) {
-		return;
-	}
-
-	//Now we have the URL. Use it.
-	PRHGistToCodeRunnerWindowController *wc = [[PRHGistToCodeRunnerWindowController alloc] init];
-	wc.gistURL = URL;
-	wc.delegate = self;
-	[wc start];
-	[servicesInProgress addObject:wc];
+	return URL;
 }
 
 - (void) gistToCodeRunnerDidFinish:(PRHGistToCodeRunnerWindowController *)windowController {
