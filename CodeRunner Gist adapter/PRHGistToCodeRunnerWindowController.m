@@ -100,9 +100,11 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
 			                                                     options:(NSJSONReadingOptions)0
 				                                                   error:&error];
+			if (!dict) goto epilogue;
 			gistName = dict[@"description"];
 			if (![self objectIsKindOfClass:[NSString class] andIsNonNilAndNonEmpty:gistName]) {
 				error = [self invalidFormatError];
+				goto epilogue;
 			}
 
 			if ([self isWindowLoaded]) {
@@ -122,6 +124,7 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			NSURL *cachesDirURL = [manager URLForDirectory:NSCachesDirectory
 			                                      inDomain:NSUserDomainMask
 					                     appropriateForURL:nil create:YES error:&error];
+			if (!cachesDirURL) goto epilogue;
 			NSString *mainBundleIdentifier = [[NSBundle mainBundle]
 				bundleIdentifier];
 			NSURL *appCachesDirURL = [cachesDirURL URLByAppendingPathComponent:mainBundleIdentifier
@@ -138,18 +141,20 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 			if (![self objectIsKindOfClass:[NSDictionary class]
 			        andIsNonNilAndNonEmpty:filesByFilename]) {
 				error = [self invalidFormatError];
+				goto epilogue;
 			}
 			for (NSDictionary *fileDict in [filesByFilename allValues]) {
 				if (![self objectIsKindOfClass:[NSDictionary class]
 				        andIsNonNilAndNonEmpty:fileDict]) {
 					error = [self invalidFormatError];
-					break;
+					goto epilogue;
 				}
 
 				NSString *filename = fileDict[@"filename"];
 				if (![self objectIsKindOfClass:[NSString class]
 				        andIsNonNilAndNonEmpty:filename]) {
 					error = [self invalidFormatError];
+					goto epilogue;
 				}
 				NSURL *fileURL = [gistDirectoryURL URLByAppendingPathComponent:filename
 				                                                   isDirectory:NO];
@@ -187,6 +192,8 @@ static NSString *const codeRunnerBundleIdentifier = @"com.krill.CodeRunner";
 				}
 			}
 		}
+
+	  epilogue:
 		if (error) {
 			[self cancelDownloadsAndPresentError:error];
 		} else {
